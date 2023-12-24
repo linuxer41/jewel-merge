@@ -120,12 +120,13 @@ alignment = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
-custom_minimum_size = Vector2(12, 12)
+custom_minimum_size = Vector2(250, 90)
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer" groups=["score"]]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "Score: 0"

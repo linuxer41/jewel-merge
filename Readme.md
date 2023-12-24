@@ -14,9 +14,9 @@ Jewel Merge es un juego de combinación de gemas donde debes fusionar joyas del 
 ## Avance
 
 - [X] Instanciación y posicionamiento de joyas 
-- [X] Control de puntaje   
-- [X] Efectos de explosión al combinar
+- [X] Control de puntaje
 - [X] Efectos de sonido
+- [X] Efectos de explosión al combinar
 - [ ] Poderes especiales por puntaje alto
 - [X] Físicas de joyas que caen   
 - [ ] Tema musical de fondo
@@ -32,7 +32,7 @@ Jewel Merge es un juego de combinación de gemas donde debes fusionar joyas del 
 
 ## Capturas de pantalla
 
-\``` 
+``` 
 ![Inicio](screenshots/inicio.png)
 
 *Pantalla de inicio*
@@ -40,12 +40,12 @@ Jewel Merge es un juego de combinación de gemas donde debes fusionar joyas del 
 ![Combinación](screenshots/combinacion.png)  
 
 *Efecto al realizar una combinación* 
-\```
+```
 
 ## Tecnologías
 
-\```
+```
 - Godot
 - C#
 - GDscript
-\```
+```
