@@ -74,7 +74,7 @@ public partial class Main : Node3D
 		audioPlayer = new AudioStreamPlayer(){
 			Name = "AudioPlayer",
 		};
-		lineIndicator = lineParticle();
+		lineIndicator = LaserParticles();
 		// score group
 		scoreLabel = GetTree().GetFirstNodeInGroup("score") as Label;
 		scoreLabel.AddThemeFontSizeOverride("font_size", 30);
@@ -254,7 +254,6 @@ public partial class Main : Node3D
 		activeItems.Add(activeItem);
 		
 	}
-	// GetTree().CreateTimer(0.5f).Timeout += OnTimerTimeout;
 
 
 	Jewel SpawnJewel(){
@@ -283,12 +282,12 @@ public partial class Main : Node3D
 		activeItem = null;
 		audioPlayer.Stream = audioStreams["drop"];
 		audioPlayer.Play();
-		GetTree().CreateTimer(1f).Timeout += ()=>{
+		GetTree().CreateTimer(0.5f).Timeout += ()=>{
 			resPawn();
 		};
 	}
 
-	GpuParticles3D lineParticle(){
+	GpuParticles3D LaserParticles(){
 		var mergeParticles = new GpuParticles3D
         {
 			
@@ -315,16 +314,16 @@ public partial class Main : Node3D
 		return mergeParticles;
 	}
 
-	void Particles(Jewel jewel){
+	void MergingParticles(Jewel jewel){
         var mergeParticles = new GpuParticles3D
         {
 			
 			DrawPasses = 1,
 			DrawPass1 = new BoxMesh(){
 				Material = new StandardMaterial3D(){
-					AlbedoColor = Colors.RebeccaPurple,
+					AlbedoColor = new Color(1.0f, 0.5f, 0.0f),
 				},
-				Size = Vector3.One * 0.1f,
+				Size = Vector3.One * 0.3f,
 			},
 
             OneShot = true,
@@ -370,7 +369,7 @@ public partial class Main : Node3D
 			// sound
 			audioPlayer.Stream = audioStreams["merge"];
 			audioPlayer.Play();
-			Particles(jewel);
+			MergingParticles(jewel);
 			score += current.Level;
 			jewel.Merge += Merge;
 

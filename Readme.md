@@ -32,7 +32,6 @@ Jewel Merge es un juego de combinación de gemas donde debes fusionar joyas del 
 
 ## Capturas de pantalla
 
-``` 
 ![Inicio](screenshots/inicio.png)
 
 *Pantalla de inicio*
@@ -40,7 +39,6 @@ Jewel Merge es un juego de combinación de gemas donde debes fusionar joyas del 
 ![Combinación](screenshots/combinacion.png)  
 
 *Efecto al realizar una combinación* 
-```
 
 ## Tecnologías
 
