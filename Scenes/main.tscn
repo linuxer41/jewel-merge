@@ -1,0 +1,88 @@
+[gd_scene load_steps=10 format=3 uid="uid://5lj5v1vhnkfx"]
+
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_m2b23"]
+[ext_resource type="Texture2D" uid="uid://bxy8pqvbbhbmf" path="res://icon.svg" id="2_yvws3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ffwjt"]
+sky_material = SubResource("ProceduralSkyMaterial_tnaav")
+
+[sub_resource type="Environment" id="Environment_er6dd"]
+background_mode = 2
+sky = SubResource("Sky_ffwjt")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ll6pp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sebah"]
+size = Vector3(50, 50, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xabnf"]
+albedo_color = Color(0.0313726, 0.8, 1, 1)
+albedo_texture = ExtResource("2_yvws3")
+
+[sub_resource type="QuadMesh" id="QuadMesh_w4gfu"]
+material = SubResource("StandardMaterial3D_xabnf")
+size = Vector2(50, 50)
+subdivide_width = 50
+subdivide_depth = 50
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_m2b23")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_er6dd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_ll6pp")
+
+[node name="backgroung" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="backgroung"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+shape = SubResource("BoxShape3D_sebah")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="backgroung"]
+mesh = SubResource("QuadMesh_w4gfu")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+projection = 1
+size = 30.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer" groups=["score"]]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Puntos: "
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+light_indirect_energy = 6.0
+sky_mode = 1

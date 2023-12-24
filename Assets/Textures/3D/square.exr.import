@@ -1,0 +1,26 @@
+[remap]
+
+importer="3d_texture"
+type="CompressedTexture3D"
+uid="uid://bf2synwepsqbn"
+path="res://.godot/imported/square.exr-3530a09631201b635f2edb9dbc872320.ctex3d"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Assets/Textures/3D/square.exr"
+dest_files=["res://.godot/imported/square.exr-3530a09631201b635f2edb9dbc872320.ctex3d"]
+
+[params]
+
+compress/mode=3
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=1
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=1
+slices/vertical=64
