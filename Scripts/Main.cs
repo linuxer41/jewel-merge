@@ -277,7 +277,6 @@ public partial class Main : Node3D
 
 	void Play(){
 		if(activeItem == null) return;
-		activeItem.GravityScale = 1f;
 		activeItem.Freeze = false;
 		activeItem.isActive = false;
 		lineIndicator.Visible = false;

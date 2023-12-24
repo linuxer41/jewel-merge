@@ -85,6 +85,7 @@ public partial class Jewel : RigidBody3D
         }
         if(collisionTimes == 1){
             audioPlayer.Play();
+            GravityScale = 1f;
         }
 
     }
