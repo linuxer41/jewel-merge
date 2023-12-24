@@ -233,6 +233,7 @@ public partial class Main : Node3D
 			toPlayItems.Add(SpawnJewel());
 		}
 		activeItem = toPlayItems[0];
+		activeItem.GravityScale = 5f;
 		if (toPlayContainer.IsAncestorOf(activeItem)){
 			toPlayContainer.RemoveChild(activeItem);
 		}
@@ -243,13 +244,13 @@ public partial class Main : Node3D
 		lineIndicator.Visible = true;
 		// position the all jewels like 3d slider
 		for (int i = 0; i < toPlayItems.Count; i++){
-			var item = toPlayItems[toPlayItems.Count - i - 1];
+			var item = toPlayItems[i];
 			item.Position = new Vector3(
 				i, // X position
 				0f, // Y position
 				0f - i
 			);
-			item.isActive = true;
+			item.isActive = false;
 		}
 		activeItems.Add(activeItem);
 		
@@ -276,6 +277,7 @@ public partial class Main : Node3D
 
 	void Play(){
 		if(activeItem == null) return;
+		activeItem.GravityScale = 1f;
 		activeItem.Freeze = false;
 		activeItem.isActive = false;
 		lineIndicator.Visible = false;
@@ -292,24 +294,25 @@ public partial class Main : Node3D
         {
 			
 			DrawPasses = 1,
-			DrawPass1 = new BoxMesh(){
+			DrawPass1 = new SphereMesh(){
 				Material = new StandardMaterial3D(){
 					AlbedoColor = Colors.BlueViolet,
 				},
-				Size = Vector3.One * 0.1f,
+				Radius = 0.05f,
 			},
-			Amount = 32,
+			Amount = 64,
             Lifetime = 3f,
 			CollisionBaseSize = 1f,
 			ProcessMaterial = new ParticleProcessMaterial(){
 				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
 				CollisionBounce = 0.8f,
-				LifetimeRandomness = 0.9f,
 			},
 			Emitting = true,
 			VisibilityAabb = new Aabb(new Vector3(-50f, -50f, -50f), new Vector3(50f, 50f, 50f)),
 			Name = "LineParticle",
 			Visible = false,
+			SpeedScale = 50f,
+			
         };
 		return mergeParticles;
 	}

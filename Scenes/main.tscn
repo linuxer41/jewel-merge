@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://5lj5v1vhnkfx"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_m2b23"]
-[ext_resource type="Texture2D" uid="uid://bxy8pqvbbhbmf" path="res://icon.svg" id="2_yvws3"]
+[ext_resource type="Texture2D" uid="uid://drfvnd13c2f12" path="res://Assets/Textures/Images/background.jpg" id="2_rw02s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -21,15 +21,16 @@ glow_enabled = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_sebah"]
 size = Vector3(50, 50, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xabnf"]
-albedo_color = Color(0.0313726, 0.8, 1, 1)
-albedo_texture = ExtResource("2_yvws3")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lttnk"]
+albedo_color = Color(0, 1, 0, 0)
+albedo_texture = ExtResource("2_rw02s")
+texture_filter = 1
 
 [sub_resource type="QuadMesh" id="QuadMesh_w4gfu"]
-material = SubResource("StandardMaterial3D_xabnf")
-size = Vector2(50, 50)
-subdivide_width = 50
-subdivide_depth = 50
+material = SubResource("StandardMaterial3D_lttnk")
+size = Vector2(60, 50)
+subdivide_width = 10
+subdivide_depth = 10
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_m2b23")
@@ -84,5 +85,4 @@ text = "Puntos: "
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-light_indirect_energy = 6.0
 sky_mode = 1

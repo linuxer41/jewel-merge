@@ -45,16 +45,15 @@ public partial class Jewel : RigidBody3D
 		};
         AudioStream audio = (AudioStream)GD.Load("res://Assets/Sound/punch.mp3");
 		audioPlayer.Stream = audio;
-        GD.Print("COLOR: " + levelColors[Level]);
 		Color color = levelColors[Level];
-        shaderMaterial.Shader = ResourceLoader.Load<Shader>("res://Assets/Shaders/jewel.gdshader");
+        shaderMaterial.Shader = ResourceLoader.Load<Shader>("res://Assets/Shaders/crystal.gdshader");
         GetChild<MeshInstance3D>(0).MaterialOverride = shaderMaterial;
 		BodyEntered += OnBodyEntered;
         shaderMaterial.SetShaderParameter("Color", color);
         AxisLockLinearZ = true;
         ContactMonitor = true;
 		MaxContactsReported = 20;
-        GravityScale = 5f;
+        GravityScale = 1f;
         SetPhysicsProcess(true);
         AddChild(audioPlayer);
 
@@ -104,22 +103,22 @@ public partial class Jewel : RigidBody3D
         
     }
 
-    //     public override void _IntegrateForces(PhysicsDirectBodyState3D state)
+    // public override void _IntegrateForces(PhysicsDirectBodyState3D state)
     // {
-    //     base._IntegrateForces(state);
-
-    //     if (state.GetContactCount() > 0)
-    //     {
-    //         var velocity = LinearVelocity;
-    //         velocity.Y = -velocity.Y;
-    //         LinearVelocity = velocity;
-    //     }
+    //     state.Transform.Basis = state.Transform.Basis.Rotated(Vector3.Up, 0.5f * (float)state.Step);
     // } 
 
     public override void _PhysicsProcess(double delta){
         // RotateY(0.5f * (float)delta);
-        if (isActive){
-            RotateY(0.5f * (float)delta);
+        if (Freeze){
+            if(isActive){
+                // RotateX(0.5f * (float)delta);
+                // GlobalRotate(Vector3.Back, 0.5f * (float)delta);
+                RotateY(0.5f * (float)delta);
+            } else{
+                RotateY(0.5f * (float)delta);
+            }
+            
         }
         // MoveAndCollide(TargetVelocity * (float)delta);
     }
