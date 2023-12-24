@@ -21,13 +21,11 @@ glow_enabled = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_sebah"]
 size = Vector3(50, 50, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lttnk"]
-albedo_color = Color(0, 1, 0, 0)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7cpv"]
 albedo_texture = ExtResource("2_rw02s")
-texture_filter = 1
 
 [sub_resource type="QuadMesh" id="QuadMesh_w4gfu"]
-material = SubResource("StandardMaterial3D_lttnk")
+material = SubResource("StandardMaterial3D_v7cpv")
 size = Vector2(60, 50)
 subdivide_width = 10
 subdivide_depth = 10
