@@ -22,6 +22,7 @@ glow_enabled = true
 size = Vector3(50, 50, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7cpv"]
+albedo_color = Color(0, 0, 0, 1)
 albedo_texture = ExtResource("2_rw02s")
 
 [sub_resource type="QuadMesh" id="QuadMesh_w4gfu"]
