@@ -74,7 +74,9 @@ public partial class Main : Node3D
 		audioPlayer = new AudioStreamPlayer(){
 			Name = "AudioPlayer",
 		};
-		lineIndicator = LaserParticles();
+		lineIndicator = GetNode<GpuParticles3D>("Laser");
+		lineIndicator.Visible = false;
+
 		// score group
 		scoreLabel = GetTree().GetFirstNodeInGroup("score") as Label;
 		scoreLabel.AddThemeFontSizeOverride("font_size", 30);
@@ -300,15 +302,14 @@ public partial class Main : Node3D
 				Radius = 0.05f,
 			},
 			Amount = 64,
-            Lifetime = 3f,
+            Lifetime = 5f,
 			CollisionBaseSize = 1f,
 			ProcessMaterial = new ParticleProcessMaterial(){
 				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
 				CollisionBounce = 0.8f,
-				EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
 			},
 			Emitting = true,
-			VisibilityAabb = new Aabb(new Vector3(-50f, -50f, -50f), new Vector3(50f, 50f, 50f)),
+			VisibilityAabb = new Aabb(new Vector3(-50f, -50f, -5f), new Vector3(50f, 50f, 50f)),
 			Name = "LineParticle",
 			Visible = false,
 			SpeedScale = 50f,
@@ -339,6 +340,10 @@ public partial class Main : Node3D
 				InitialVelocityMin = 0f,
 				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
 				CollisionBounce = 0.2f,
+				EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
+				EmissionRingAxis = new Vector3(0f, 0f, 1f),
+				EmissionRingHeight = 1f,
+				EmissionRingRadius = 1.5f,
 			},
 			Emitting = true,
         };

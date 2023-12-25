@@ -58,7 +58,7 @@ public partial class Jewel : RigidBody3D
         AddChild(audioPlayer);
 
         PhysicsMaterialOverride = new PhysicsMaterial(){
-            Bounce = 0.05f
+            Bounce = 0.1f
         };
         GpuParticlesCollisionSdf3D gpuParticlesCollisionSdf3D = new GpuParticlesCollisionSdf3D(){
             Texture = texture3D,
