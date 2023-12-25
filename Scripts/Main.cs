@@ -135,7 +135,6 @@ public partial class Main : Node3D
 		AddChild(leftWall);
 		AddChild(rightWall);
 		AddChild(audioPlayer);
-		AddChild(lineIndicator);
 		AddChild(toPlayContainer);
 		resPawn();
 
