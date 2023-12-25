@@ -305,12 +305,14 @@ public partial class Main : Node3D
 			ProcessMaterial = new ParticleProcessMaterial(){
 				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
 				CollisionBounce = 0.8f,
+				EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
 			},
 			Emitting = true,
 			VisibilityAabb = new Aabb(new Vector3(-50f, -50f, -50f), new Vector3(50f, 50f, 50f)),
 			Name = "LineParticle",
 			Visible = false,
 			SpeedScale = 50f,
+			
 			
         };
 		return mergeParticles;
