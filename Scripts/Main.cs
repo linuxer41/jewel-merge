@@ -36,8 +36,10 @@ public partial class Main : Node3D
 	{
 		mainCamera = GetNode<Camera3D>("Camera3D");
 		Rect2 viewport = GetViewport().GetVisibleRect();
-		minPOs = mainCamera.ProjectPosition(viewport.Position, 20f);
-		maxPos = mainCamera.ProjectPosition(viewport.Size, 20f);
+		minPOs = mainCamera.ProjectPosition(viewport.Position, 1f);
+		maxPos = mainCamera.ProjectPosition(viewport.Size, 1f);
+		float width = Mathf.Abs(maxPos.X - minPOs.X);
+		float height = Mathf.Abs(maxPos.Y - minPOs.Y);
 		lastPos = new Vector3(0f, minPOs.Y - 4f, 0f);
 		GD.Print("MinPos: " + minPOs + " MaxPos: " + maxPos + " Viewport size: " + viewport.Size + " Viewport position: " + viewport.Position);
 		scenes = new Dictionary<int, PackedScene>()
@@ -74,6 +76,33 @@ public partial class Main : Node3D
 		audioPlayer = new AudioStreamPlayer(){
 			Name = "AudioPlayer",
 		};
+		// set background size
+
+		StaticBody3D background = new StaticBody3D(){
+			Name = "Background",
+			Position = new Vector3(0f, 0f, -10f),
+		};
+		MeshInstance3D backgroundMesh = new MeshInstance3D(){
+			Mesh = new PlaneMesh(){
+				Size = new Vector2(width, height),
+				Orientation = PlaneMesh.OrientationEnum.Z,
+				Material = new StandardMaterial3D(){
+					AlbedoTexture = GD.Load<Texture2D>("res://Assets/Textures/Images/background.jpg"),
+				}
+			},
+		};
+
+		CollisionShape3D backgroundShape = new CollisionShape3D(){
+			Shape = new BoxShape3D(){
+				Size = new Vector3(width, height, 0.5f)
+			},
+		};
+		background.AddChild(backgroundShape);
+		background.AddChild(backgroundMesh);
+		AddChild(background);
+
+		
+		// GetNode<CollisionShape3D>("Background/CollisionShape3D").Shape = new BoxShape3D(){Size = new Vector3(viewport.Size.X, 0.5f, viewport.Size.Y)};
 		lineIndicator = GetNode<GpuParticles3D>("Laser");
 		lineIndicator.Visible = false;
 
@@ -205,7 +234,7 @@ public partial class Main : Node3D
 		Vector3 castPos = castPosition(pos);
 		lastPos = new Vector3(castPos.X, lastPos.Y, lastPos.Z);
 		if(activeItem != null && activeItem.Freeze) activeItem.Position = lastPos;
-		lineIndicator.GlobalPosition = new Vector3(lastPos.X,  lastPos.Y-0.2f, lastPos.Z);
+		lineIndicator.GlobalPosition = new Vector3(lastPos.X,  lastPos.Y-0.5f, lastPos.Z);
    }
 
 
@@ -241,7 +270,7 @@ public partial class Main : Node3D
 		toPlayItems.RemoveAt(0);
 		activeItem.Position = lastPos;
 		activeItem.isActive = true;
-		lineIndicator.GlobalPosition = new Vector3(lastPos.X,  lastPos.Y-0.2f, lastPos.Z);
+		lineIndicator.GlobalPosition = new Vector3(lastPos.X,  lastPos.Y-0.5f, lastPos.Z);
 		lineIndicator.Visible = true;
 		// position the all jewels like 3d slider
 		for (int i = 0; i < toPlayItems.Count; i++){
@@ -323,26 +352,40 @@ public partial class Main : Node3D
         {
 			
 			DrawPasses = 1,
-			DrawPass1 = new BoxMesh(){
+			DrawPass1 = new QuadMesh(){
 				Material = new StandardMaterial3D(){
-					AlbedoColor = new Color(1.0f, 0.5f, 0.0f),
+					
+					AlbedoTexture = GD.Load<Texture2D>("res://Assets/Textures/Sprites/1.png"),
+					Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
+					BlendMode = BaseMaterial3D.BlendModeEnum.Add,
 				},
-				Size = Vector3.One * 0.3f,
+				Size = Vector2.One * 1f
 			},
 
             OneShot = true,
-			Amount = 32,
+			Amount = 64,
             Lifetime = 1f,
 			ProcessMaterial = new ParticleProcessMaterial(){
+				LifetimeRandomness = 1f,
 				Spread = 180f,
-				InitialVelocityMax = 5f,
-				InitialVelocityMin = 0f,
+				InitialVelocityMax = 1f,
+				InitialVelocityMin = 0.2f,
 				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
 				CollisionBounce = 0.2f,
 				EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
 				EmissionRingAxis = new Vector3(0f, 0f, 1f),
-				EmissionRingHeight = 1f,
 				EmissionRingRadius = 1.5f,
+				EmissionRingInnerRadius = 0.5f,
+				Gravity = Vector3.Zero,
+				ParticleFlagDisableZ = true,
+				RadialVelocityMin = 1f,
+				RadialVelocityMax = 3f,
+				ScaleMin = 0.2f,
+				ScaleMax = 1f,
+				HueVariationMin = 0f,
+				HueVariationMax = 5f,
+				// VelocityPivot = Vector3.One,
+				// Direction = Vector3.One,
 			},
 			Emitting = true,
         };

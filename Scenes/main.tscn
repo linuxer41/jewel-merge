@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://5lj5v1vhnkfx"]
+[gd_scene load_steps=9 format=3 uid="uid://5lj5v1vhnkfx"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_m2b23"]
-[ext_resource type="Texture2D" uid="uid://drfvnd13c2f12" path="res://Assets/Textures/Images/background.jpg" id="2_rw02s"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -18,31 +17,25 @@ glow_enabled = true
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ll6pp"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_sebah"]
-size = Vector3(50, 50, 0.1)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qa5jm"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 9.8
+initial_velocity_max = 9.8
+gravity = Vector3(0, 0, 0)
+collision_mode = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7cpv"]
-albedo_texture = ExtResource("2_rw02s")
-metallic = 0.78
-metallic_specular = 0.76
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uuch1"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(1, 0, 0.0166664, 1)
+uv1_scale = Vector3(50, 50, 50)
 
-[sub_resource type="QuadMesh" id="QuadMesh_w4gfu"]
-material = SubResource("StandardMaterial3D_v7cpv")
-size = Vector2(60, 50)
-subdivide_width = 10
-subdivide_depth = 10
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fw7bm"]
-collision_mode = 1
-collision_friction = 0.0
-collision_bounce = 0.8
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3i3og"]
-albedo_color = Color(0.541176, 0.168627, 0.886275, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_1avps"]
-material = SubResource("StandardMaterial3D_3i3og")
-radius = 0.05
+[sub_resource type="QuadMesh" id="QuadMesh_27hwe"]
+material = SubResource("StandardMaterial3D_uuch1")
+size = Vector2(0.2, 0.2)
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_m2b23")
@@ -54,16 +47,6 @@ environment = SubResource("Environment_er6dd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_ll6pp")
-
-[node name="backgroung" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="backgroung"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
-shape = SubResource("BoxShape3D_sebah")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="backgroung"]
-mesh = SubResource("QuadMesh_w4gfu")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
@@ -100,11 +83,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 sky_mode = 1
 
 [node name="Laser" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.17356, 10.8, 0)
-amount = 64
-lifetime = 5.0
-speed_scale = 50.0
+amount = 150
+lifetime = 3.0
+speed_scale = 2.0
+fixed_fps = 60
 collision_base_size = 1.0
-visibility_aabb = AABB(-1.00001, -164.333, -1.00001, 2.00002, 199.311, 2.00002)
-process_material = SubResource("ParticleProcessMaterial_fw7bm")
-draw_pass_1 = SubResource("SphereMesh_1avps")
+visibility_aabb = AABB(-1.00001, -45.59, -1.00001, 2.00002, 46.5893, 2.00002)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_qa5jm")
+draw_pass_1 = SubResource("QuadMesh_27hwe")
