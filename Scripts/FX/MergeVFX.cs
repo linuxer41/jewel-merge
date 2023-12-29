@@ -20,7 +20,7 @@ public partial class MergeVFX : GpuParticles3D
 		};
 
 		OneShot = true;
-		Amount = 180;
+		Amount = 60;
 		Lifetime = 1.2f;
 		ProcessMaterial = new ParticleProcessMaterial(){
 			LifetimeRandomness = 1f,
