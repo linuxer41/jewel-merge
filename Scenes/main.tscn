@@ -1,6 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://5lj5v1vhnkfx"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_m2b23"]
+[ext_resource type="Texture2D" uid="uid://do5qoawle7qun" path="res://Assets/Textures/Images/score.png" id="2_2gied"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -15,18 +16,11 @@ sky = SubResource("Sky_ffwjt")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ll6pp"]
-
 [node name="main" type="Node3D"]
 script = ExtResource("1_m2b23")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_er6dd")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_ll6pp")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
@@ -43,8 +37,10 @@ grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = 0.0263889
+anchor_right = 0.979167
+anchor_bottom = 0.105469
 grow_horizontal = 2
 alignment = 2
 metadata/_edit_use_anchors_ = true
@@ -53,9 +49,29 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(250, 60)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer" groups=["score"]]
+[node name="TextureRect" type="TextureRect" parent="Control/HBoxContainer/MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_2gied")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/TextureRect" groups=["score"]]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -22.5
+offset_right = 63.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
 text = "Puntos: "
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

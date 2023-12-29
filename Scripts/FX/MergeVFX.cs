@@ -3,27 +3,29 @@ using Godot;
 public partial class MergeVFX : GpuParticles3D
 {
 	public int Level {get; set; } = 1;
-	public Color color {get; set; } = Colors.Red;
+	public Color colorA {get; set; } = Colors.Red;
+	public Color colorB {get; set; } = Colors.Green;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		DrawPass1 = new QuadMesh(){
 			Material = new StandardMaterial3D(){
 				AlbedoTexture = GD.Load<CompressedTexture2D>($"res://Assets/Textures/Sprites/{Level}.png"),
-				AlbedoColor = color,
+				AlbedoColor = colorB,
+				VertexColorUseAsAlbedo = true,
 				Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
 				BlendMode = BaseMaterial3D.BlendModeEnum.Add,
 			},
-			Size = Vector2.One * 1f
+			Size = Vector2.One * 1f,
 		};
 
 		OneShot = true;
-		Amount = 64;
-		Lifetime = 1f;
+		Amount = 180;
+		Lifetime = 1.2f;
 		ProcessMaterial = new ParticleProcessMaterial(){
 			LifetimeRandomness = 1f,
 			Spread = 180f,
-			InitialVelocityMax = 1f,
+			InitialVelocityMax = 5f,
 			InitialVelocityMin = 0.2f,
 			CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
 			CollisionBounce = 0.2f,
@@ -33,14 +35,19 @@ public partial class MergeVFX : GpuParticles3D
 			EmissionRingInnerRadius = 0.5f,
 			Gravity = Vector3.Zero,
 			ParticleFlagDisableZ = true,
-			RadialVelocityMin = 1f,
+			RadialVelocityMin = 0.5f,
 			RadialVelocityMax = 3f,
-			ScaleMin = 0.2f,
-			ScaleMax = 1f,
-			HueVariationMin = 0f,
-			HueVariationMax = 5f,
-			// VelocityPivot = Vector3.One,
-			// Direction = Vector3.One,
+			ScaleMin = 0.3f,
+			ScaleMax = 2.5f,
+			Color = Colors.White,
+			ColorRamp = new GradientTexture2D(){
+				Gradient = new Gradient(){
+					Colors = new Color[]{colorA, colorB},
+					Offsets = new float[]{0.1f, 0.55f},
+					InterpolationMode = Gradient.InterpolationModeEnum.Cubic,
+				},
+				
+			},
 		};
 		Emitting = true;
 		SetDisableScale(true);

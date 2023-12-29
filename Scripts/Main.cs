@@ -36,7 +36,7 @@ public partial class Main : Node3D
 		maxPos = mainCamera.ProjectPosition(viewport.Size, 1f);
 		float width = Mathf.Abs(maxPos.X - minPOs.X);
 		float height = Mathf.Abs(maxPos.Y - minPOs.Y);
-		lastPos = new Vector3(0f, minPOs.Y - 4f, 0f);
+		lastPos = new Vector3(0f, minPOs.Y - 5.5f, 0f);
 		GD.Print("MinPos: " + minPOs + " MaxPos: " + maxPos + " Viewport size: " + viewport.Size + " Viewport position: " + viewport.Position);
 		scenes = new Dictionary<int, PackedScene>()
 		{
@@ -122,9 +122,39 @@ public partial class Main : Node3D
 				Size = new Vector3(100f, 0.5f, 5f)
 			}
 		};
+		var floorMesh = new MeshInstance3D(){
+			Mesh = new QuadMesh(){
+				Size = new Vector2(100f, 0.5f),
+				Material = new StandardMaterial3D(){
+					AlbedoTexture = GD.Load<Texture2D>("res://Assets/Textures/Images/floor.png"),
+					Uv1Scale = new Vector3(20f, 1, 1),
+					Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
+				},
+			},
+			Position = Vector3.Back * 2f,
+		};
+		var ceilingCollider = new CollisionShape3D(){
+			Shape = new BoxShape3D(){
+				Size = new Vector3(100f, 0.5f, 5f)
+			}
+		};
+		var ceilingMesh = new MeshInstance3D(){
+			Mesh = new QuadMesh(){
+				Size = new Vector2(100f, 0.5f),
+				Material = new StandardMaterial3D(){
+					AlbedoTexture = GD.Load<Texture2D>("res://Assets/Textures/Images/ceiling.png"),
+					Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
+					Uv1Scale = new Vector3(10f, 1, 1),
+				}
+			}
+		};
 		var floor = new StaticBody3D(){
-			Position = new Vector3(0, maxPos.Y, 0f), 
+			Position = new Vector3(0, maxPos.Y + 0.25f, 0f), 
 			Name = "Floor",
+		};
+		var ceiling = new StaticBody3D(){
+			Position = new Vector3(0, minPOs.Y -3f, 0f), 
+			Name = "Ceiling",
 		};
 		var leftWall = new StaticBody3D(){
 			Position = new Vector3(minPOs.X, 0, 0),
@@ -151,10 +181,14 @@ public partial class Main : Node3D
 		leftWall.AddChild(colliderL);
 		rightWall.AddChild(colliderR);
 		floor.AddChild(floorCollider);
+		floor.AddChild(floorMesh);
 		floor.AddChild(particlesCollisionBox3D);
+		ceiling.AddChild(ceilingMesh);
+		ceiling.AddChild(ceilingCollider);
 		AddChild(floor);
 		AddChild(leftWall);
 		AddChild(rightWall);
+		AddChild(ceiling);
 		AddChild(audioPlayer);
 		AddChild(toPlayContainer);
 		resPawn();
@@ -255,7 +289,6 @@ public partial class Main : Node3D
 		}
 		activeItem = toPlayItems[0];
 		activeItem.PlayLaser();
-		activeItem.GravityScale = 5f;
 		if (toPlayContainer.IsAncestorOf(activeItem)){
 			toPlayContainer.RemoveChild(activeItem);
 		}
@@ -296,6 +329,7 @@ public partial class Main : Node3D
 
 	void Play(){
 		if(activeItem == null) return;
+		activeItem.GravityScale = 5f;
 		activeItem.Freeze = false;
 		activeItem.isActive = false;
 		activeItem.DestroyLaser();

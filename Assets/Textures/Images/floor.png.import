@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjf1nsg3eic6r"
-path.s3tc="res://.godot/imported/background.jpg-1245bd1c3e66eb46afb68a1f3226b45e.s3tc.ctex"
-path.etc2="res://.godot/imported/background.jpg-1245bd1c3e66eb46afb68a1f3226b45e.etc2.ctex"
+uid="uid://bybi526evfmro"
+path.s3tc="res://.godot/imported/floor.png-1c2950ae324798db97af72a0ef34146f.s3tc.ctex"
+path.etc2="res://.godot/imported/floor.png-1c2950ae324798db97af72a0ef34146f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Textures/Images/background.jpg"
-dest_files=["res://.godot/imported/background.jpg-1245bd1c3e66eb46afb68a1f3226b45e.s3tc.ctex", "res://.godot/imported/background.jpg-1245bd1c3e66eb46afb68a1f3226b45e.etc2.ctex"]
+source_file="res://Assets/Textures/Images/floor.png"
+dest_files=["res://.godot/imported/floor.png-1c2950ae324798db97af72a0ef34146f.s3tc.ctex", "res://.godot/imported/floor.png-1c2950ae324798db97af72a0ef34146f.etc2.ctex"]
 
 [params]
 

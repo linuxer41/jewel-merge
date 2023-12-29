@@ -131,12 +131,13 @@ public partial class Jewel : RigidBody3D
     public void PlayMerge(){
         mergeVFX = new MergeVFX(){
             Level = Level,
-            color = levelColors[Level],
+            colorA = levelColors[Level - 1],
+            colorB = levelColors[Level],
         };
         AddChild(mergeVFX);
         mergeAudioPlayer.Play();
         // timer for release
-        GetTree().CreateTimer(2.5).Timeout += ()=>{
+        GetTree().CreateTimer(3).Timeout += ()=>{
             mergeVFX.QueueFree();
         };
     }

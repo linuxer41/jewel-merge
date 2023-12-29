@@ -24,18 +24,24 @@ public partial class LaserVFX : GpuParticles3D
             Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
             BlendMode = BaseMaterial3D.BlendModeEnum.Add,
             AlbedoColor = color,
+            EmissionEnabled = true,
+            EmissionEnergyMultiplier = 10f,
+            Emission = color,
+            BillboardKeepScale = true,
+            BillboardMode = BaseMaterial3D.BillboardModeEnum.Particles,
+            // lasser effect
+
         };
 
-        SphereMesh mesh = new SphereMesh
+        BoxMesh mesh = new BoxMesh
         {
             Material = material,
-            Radius = 0.1f
+            Size = Vector3.One * 0.2f,
         };
-
         DrawPass1 = mesh; 
         Amount = 150;
-        Lifetime = 3.0f;
-        SpeedScale = 2.0f;
+        Lifetime = 3f;
+        SpeedScale = 4.0f;
         FixedFps = 60;
         CollisionBaseSize = 1.0f; ;
         VisibilityAabb = new Aabb(-1.00001f, -45.59f, -1.00001f,  2.00002f, 46.5893f, 2.00002f);;
@@ -43,6 +49,6 @@ public partial class LaserVFX : GpuParticles3D
         ProcessMaterial = processMaterial;
         DrawPass1 = DrawPass1;
         SetDisableScale(true);
-        Position = new Vector3(0, -0.5f, 0);
+        Position = new Vector3(0, -0.1f, 0);
     }
 }

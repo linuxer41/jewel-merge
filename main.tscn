@@ -1,0 +1,347 @@
+[gd_scene load_steps=38 format=3 uid="uid://b8vj0r66pnpm1"]
+
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_7wpuw"]
+[ext_resource type="Texture2D" uid="uid://do5qoawle7qun" path="res://Assets/Textures/Images/score.png" id="2_cnsoq"]
+[ext_resource type="Texture2D" uid="uid://bjf1nsg3eic6r" path="res://Assets/Textures/Images/background.jpg" id="3_sbqrp"]
+[ext_resource type="Texture2D" uid="uid://bybi526evfmro" path="res://Assets/Textures/Images/floor.png" id="4_tnd5a"]
+[ext_resource type="Texture2D" uid="uid://h0u1p02sdnuf" path="res://Assets/Textures/Images/ceiling.png" id="5_4kfu6"]
+[ext_resource type="AudioStream" uid="uid://cww43x51jb0ak" path="res://Assets/Sound/background.mp3" id="6_gejmk"]
+[ext_resource type="PackedScene" uid="uid://oql0m1uri010" path="res://Scenes/square.tscn" id="7_e8bto"]
+[ext_resource type="AudioStream" uid="uid://ca0lojcqmyjl3" path="res://Assets/Sound/success.mp3" id="8_vmk40"]
+[ext_resource type="AudioStream" uid="uid://dur36t3roc3dx" path="res://Assets/Sound/drop.wav" id="9_sbuyv"]
+[ext_resource type="AudioStream" uid="uid://b8cuwymn6l5qa" path="res://Assets/Sound/punch.mp3" id="10_82sx0"]
+[ext_resource type="PackedScene" uid="uid://dd6wubbowhlpa" path="res://Scenes/heart.tscn" id="11_rw0jh"]
+[ext_resource type="Script" path="res://Scripts/FX/LaserVFX.cs" id="12_hvu41"]
+[ext_resource type="PackedScene" uid="uid://do3gql4e0ftqc" path="res://Scenes/circle.tscn" id="13_mlvsy"]
+[ext_resource type="Texture2D" uid="uid://c10n0m1pt7srr" path="res://Assets/Textures/Sprites/5.png" id="14_2ey0d"]
+[ext_resource type="Script" path="res://Scripts/FX/MergeVFX.cs" id="15_iriod"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ffwjt"]
+sky_material = SubResource("ProceduralSkyMaterial_tnaav")
+
+[sub_resource type="Environment" id="Environment_er6dd"]
+background_mode = 2
+sky = SubResource("Sky_ffwjt")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3jphj"]
+size = Vector3(58.1016, 30, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lqifj"]
+albedo_texture = ExtResource("3_sbqrp")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2n4vt"]
+material = SubResource("StandardMaterial3D_lqifj")
+size = Vector2(58.1016, 30)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8idr"]
+size = Vector3(100, 0.5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hvlmr"]
+transparency = 1
+albedo_texture = ExtResource("4_tnd5a")
+uv1_scale = Vector3(20, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_u35a5"]
+material = SubResource("StandardMaterial3D_hvlmr")
+size = Vector2(100, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_03dup"]
+size = Vector3(0.5, 50, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pwq10"]
+size = Vector3(0.5, 50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d2u4a"]
+transparency = 1
+albedo_texture = ExtResource("5_4kfu6")
+uv1_scale = Vector3(10, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_74gvy"]
+material = SubResource("StandardMaterial3D_d2u4a")
+size = Vector2(100, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i3on3"]
+size = Vector3(100, 0.5, 5)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jirjg"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 9.8
+initial_velocity_max = 9.8
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r82tx"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(0.105882, 0, 0.701961, 1)
+emission_enabled = true
+emission = Color(0.105882, 0, 0.701961, 1)
+emission_energy_multiplier = 10.0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="BoxMesh" id="BoxMesh_fmo1q"]
+material = SubResource("StandardMaterial3D_r82tx")
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="Gradient" id="Gradient_v6c8a"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_m3pco"]
+gradient = SubResource("Gradient_v6c8a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cc618"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.5
+emission_ring_inner_radius = 0.5
+direction = Vector3(1, 1, 0)
+spread = 180.0
+initial_velocity_min = 106.94
+initial_velocity_max = 106.94
+radial_velocity_min = 0.5
+radial_velocity_max = 3.0
+gravity = Vector3(0, 0, 0)
+scale_min = 62.1
+scale_max = 62.1
+color_ramp = SubResource("GradientTexture1D_m3pco")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_34jan"]
+transparency = 1
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.701961, 0.701961, 0, 1)
+albedo_texture = ExtResource("14_2ey0d")
+use_particle_trails = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_ledbp"]
+material = SubResource("StandardMaterial3D_34jan")
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_7wpuw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_er6dd")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+projection = 1
+current = true
+size = 30.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0263889
+anchor_right = 0.979167
+anchor_bottom = 0.105469
+grow_horizontal = 2
+alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_cnsoq")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/TextureRect" groups=["score"]]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -22.5
+offset_right = 63.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Score: 4"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+sky_mode = 1
+
+[node name="Background" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="_CollisionShape3D_2" type="CollisionShape3D" parent="Background"]
+shape = SubResource("BoxShape3D_3jphj")
+
+[node name="_MeshInstance3D_3" type="MeshInstance3D" parent="Background"]
+mesh = SubResource("PlaneMesh_2n4vt")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14.75, 0)
+
+[node name="_CollisionShape3D_6" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_u8idr")
+
+[node name="_MeshInstance3D_7" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = SubResource("QuadMesh_u35a5")
+
+[node name="_GPUParticlesCollisionBox3D_8" type="GPUParticlesCollisionBox3D" parent="Floor"]
+size = Vector3(50, 0.5, 50)
+
+[node name="LeftWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.0508, 0, 0)
+
+[node name="_CollisionShape3D_4" type="CollisionShape3D" parent="LeftWall"]
+shape = SubResource("BoxShape3D_03dup")
+
+[node name="RightWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.0508, 0, 0)
+
+[node name="_CollisionShape3D_5" type="CollisionShape3D" parent="RightWall"]
+shape = SubResource("BoxShape3D_pwq10")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+
+[node name="_MeshInstance3D_9" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("QuadMesh_74gvy")
+
+[node name="_CollisionShape3D_10" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("BoxShape3D_i3on3")
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_gejmk")
+autoplay = true
+
+[node name="ToPlayContainer" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -27.0508, 13, -4)
+
+[node name="_RigidBody3D_12" parent="ToPlayContainer" instance=ExtResource("7_e8bto")]
+axis_lock_linear_z = true
+freeze = true
+max_contacts_reported = 20
+contact_monitor = true
+
+[node name="MergeAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/_RigidBody3D_12"]
+stream = ExtResource("8_vmk40")
+
+[node name="DropAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/_RigidBody3D_12"]
+stream = ExtResource("9_sbuyv")
+
+[node name="CollisionAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/_RigidBody3D_12"]
+stream = ExtResource("10_82sx0")
+
+[node name="_RigidBody3D_15" parent="ToPlayContainer" instance=ExtResource("11_rw0jh")]
+transform = Transform3D(1.33333, 0, 0, 0, 1.33333, 0, 0, 0, 1.33333, 1, 0, -1)
+axis_lock_linear_z = true
+freeze = true
+max_contacts_reported = 20
+contact_monitor = true
+
+[node name="MergeAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/_RigidBody3D_15"]
+stream = ExtResource("8_vmk40")
+
+[node name="DropAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/_RigidBody3D_15"]
+stream = ExtResource("9_sbuyv")
+
+[node name="CollisionAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/_RigidBody3D_15"]
+stream = ExtResource("10_82sx0")
+
+[node name="square" parent="ToPlayContainer" instance=ExtResource("7_e8bto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+axis_lock_linear_z = true
+freeze = true
+max_contacts_reported = 20
+contact_monitor = true
+
+[node name="MergeAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/square"]
+stream = ExtResource("8_vmk40")
+
+[node name="DropAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/square"]
+stream = ExtResource("9_sbuyv")
+
+[node name="CollisionAudioPlayer" type="AudioStreamPlayer" parent="ToPlayContainer/square"]
+stream = ExtResource("10_82sx0")
+
+[node name="heart" parent="." instance=ExtResource("11_rw0jh")]
+transform = Transform3D(1.33333, 0, 0, 0, 1.33333, 0, 0, 0, 1.33333, -8.59738, 9.5, 0)
+axis_lock_linear_z = true
+freeze = true
+max_contacts_reported = 20
+contact_monitor = true
+
+[node name="MergeAudioPlayer" type="AudioStreamPlayer" parent="heart"]
+stream = ExtResource("8_vmk40")
+
+[node name="DropAudioPlayer" type="AudioStreamPlayer" parent="heart"]
+stream = ExtResource("9_sbuyv")
+
+[node name="CollisionAudioPlayer" type="AudioStreamPlayer" parent="heart"]
+stream = ExtResource("10_82sx0")
+
+[node name="_GPUParticles3D_16" type="GPUParticles3D" parent="heart"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+amount = 150
+lifetime = 3.0
+speed_scale = 4.0
+fixed_fps = 60
+collision_base_size = 1.0
+visibility_aabb = AABB(-1.00001, -45.59, -1.00001, 2.00002, 46.5893, 2.00002)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_jirjg")
+draw_pass_1 = SubResource("BoxMesh_fmo1q")
+script = ExtResource("12_hvu41")
+
+[node name="cricle" parent="." instance=ExtResource("13_mlvsy")]
+transform = Transform3D(1.14888, 1.20725, -0.0202496, -1.20346, 1.14269, -0.153995, -0.0976625, 0.120774, 1.65941, -8.83721, -14.4166, -0.104871)
+axis_lock_linear_z = true
+sleeping = true
+max_contacts_reported = 20
+contact_monitor = true
+
+[node name="MergeAudioPlayer" type="AudioStreamPlayer" parent="cricle"]
+stream = ExtResource("8_vmk40")
+
+[node name="DropAudioPlayer" type="AudioStreamPlayer" parent="cricle"]
+stream = ExtResource("9_sbuyv")
+
+[node name="CollisionAudioPlayer" type="AudioStreamPlayer" parent="cricle"]
+stream = ExtResource("10_82sx0")
+
+[node name="_GPUParticles3D_17" type="GPUParticles3D" parent="cricle"]
+amount = 180
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_cc618")
+draw_pass_1 = SubResource("QuadMesh_ledbp")
+script = ExtResource("15_iriod")
