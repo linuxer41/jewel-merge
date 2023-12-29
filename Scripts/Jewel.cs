@@ -8,13 +8,18 @@ public partial class Jewel : RigidBody3D
     public int Level {get; set; }
     public bool isActive {get; set; } = false;
     public bool merging {get; set; } = false;
-    AudioStreamPlayer audioPlayer;
+    AudioStreamPlayer dropAudioPlayer;
+	AudioStreamPlayer collisionAudioPlayer;
+	AudioStreamPlayer mergeAudioPlayer;
 
     public Texture3D texture3D;
 
     private int collisionTimes = 0;
 
     public Vector3 TargetVelocity {get; set; } = Vector3.Zero;
+
+    public LaserVFX laserVFX;
+    public MergeVFX mergeVFX;
 
 	[Signal]
 	public delegate void MergeEventHandler(Jewel current, Jewel target);
@@ -33,18 +38,32 @@ public partial class Jewel : RigidBody3D
 	};
 
     Texture3D collisionTexture;
+    Dictionary<string, AudioStream> audioStreams;
 
 
     public override void _Ready()
     {
+        audioStreams = new Dictionary<string, AudioStream>()
+		{
+			{"merge", (AudioStream)GD.Load("res://Assets/Sound/success.mp3")},
+			{"drop", (AudioStream)GD.Load("res://Assets/Sound/drop.wav")},
+            {"collision", (AudioStream)GD.Load("res://Assets/Sound/punch.mp3")},
+		};
 		ShaderMaterial  shaderMaterial = new ShaderMaterial(){
 			
         };
-        audioPlayer = new AudioStreamPlayer(){
-			Name = "AudioPlayer" + Name,
+        mergeAudioPlayer = new AudioStreamPlayer(){
+			Name = "MergeAudioPlayer",
+            Stream = audioStreams["merge"],
 		};
-        AudioStream audio = (AudioStream)GD.Load("res://Assets/Sound/punch.mp3");
-		audioPlayer.Stream = audio;
+        dropAudioPlayer = new AudioStreamPlayer(){
+            Name = "DropAudioPlayer",
+            Stream = audioStreams["drop"],
+        };
+        collisionAudioPlayer = new AudioStreamPlayer(){
+            Name = "CollisionAudioPlayer",
+            Stream = audioStreams["collision"],
+        };
 		Color color = levelColors[Level];
         shaderMaterial.Shader = ResourceLoader.Load<Shader>("res://Assets/Shaders/crystal.gdshader");
         GetChild<MeshInstance3D>(0).MaterialOverride = shaderMaterial;
@@ -55,17 +74,9 @@ public partial class Jewel : RigidBody3D
 		MaxContactsReported = 20;
         GravityScale = 1f;
         SetPhysicsProcess(true);
-        AddChild(audioPlayer);
-
-        PhysicsMaterialOverride = new PhysicsMaterial(){
-            Bounce = 0.1f
-        };
-        GpuParticlesCollisionSdf3D gpuParticlesCollisionSdf3D = new GpuParticlesCollisionSdf3D(){
-            Texture = texture3D,
-            Size = Vector3.One * 2f,
-            Position = new Vector3(0, 0.9f, 0),
-        };
-        AddChild(gpuParticlesCollisionSdf3D);
+        AddChild(mergeAudioPlayer);
+        AddChild(dropAudioPlayer);
+        AddChild(collisionAudioPlayer);
 
     }
     private void OnBodyEntered(Node body)
@@ -84,7 +95,7 @@ public partial class Jewel : RigidBody3D
             }
         }
         if(collisionTimes == 1){
-            audioPlayer.Play();
+            collisionAudioPlayer.Play();
             GravityScale = 1f;
         }
 
@@ -104,23 +115,42 @@ public partial class Jewel : RigidBody3D
         
     }
 
-    // public override void _IntegrateForces(PhysicsDirectBodyState3D state)
-    // {
-    //     state.Transform.Basis = state.Transform.Basis.Rotated(Vector3.Up, 0.5f * (float)state.Step);
-    // } 
-
     public override void _PhysicsProcess(double delta){
         // RotateY(0.5f * (float)delta);
         if (Freeze){
             if(isActive){
-                // RotateX(0.5f * (float)delta);
+                RotateX(0.5f * (float)delta);
                 // GlobalRotate(Vector3.Back, 0.5f * (float)delta);
-                RotateY(0.5f * (float)delta);
+                // GetChild<MeshInstance3D>(0).RotateObjectLocal(Vector3.Back, 0.5f * (float)delta);
             } else{
-                RotateY(0.5f * (float)delta);
+                GetChild<MeshInstance3D>(0).RotateY(0.5f * (float)delta);
             }
             
         }
         // MoveAndCollide(TargetVelocity * (float)delta);
+    }
+
+    public void PlayMerge(){
+        mergeVFX = new MergeVFX(){
+            Level = Level,
+            color = levelColors[Level],
+        };
+        AddChild(mergeVFX);
+        mergeAudioPlayer.Play();
+        // timer for release
+        GetTree().CreateTimer(2.5).Timeout += ()=>{
+            mergeVFX.QueueFree();
+        };
+    }
+    public void PlayLaser(){
+        laserVFX = new LaserVFX(){
+            color = levelColors[Level],
+        };
+        AddChild(laserVFX);
+    }
+
+    public void DestroyLaser(){
+        dropAudioPlayer.Play();
+        laserVFX.QueueFree();
     }
 }

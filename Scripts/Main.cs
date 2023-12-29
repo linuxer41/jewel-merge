@@ -26,12 +26,8 @@ public partial class Main : Node3D
 	Label scoreLabel;
 
 	AudioStreamPlayer audioPlayer;
-	GpuParticles3D lineIndicator;
 
 	Node3D toPlayContainer;
-
-	
-	Dictionary<string, AudioStream> audioStreams;
 	public override void _Ready()
 	{
 		mainCamera = GetNode<Camera3D>("Camera3D");
@@ -68,13 +64,13 @@ public partial class Main : Node3D
 			{9, GD.Load<CompressedTexture3D>("res://Assets/Textures/3D/heart.exr")},
 			{10, GD.Load<CompressedTexture3D>("res://Assets/Textures/3D/square.exr")},
 		};
-		audioStreams = new Dictionary<string, AudioStream>()
-		{
-			{"merge", (AudioStream)GD.Load("res://Assets/Sound/success.mp3")},
-			{"drop", (AudioStream)GD.Load("res://Assets/Sound/drop.wav")},
-		};
+		AudioStream audioStream = (AudioStream)GD.Load("res://Assets/Sound/background.mp3");
 		audioPlayer = new AudioStreamPlayer(){
 			Name = "AudioPlayer",
+			Stream = audioStream,
+			Autoplay = true,
+			// loop
+			
 		};
 		// set background size
 
@@ -101,10 +97,6 @@ public partial class Main : Node3D
 		background.AddChild(backgroundMesh);
 		AddChild(background);
 
-		
-		// GetNode<CollisionShape3D>("Background/CollisionShape3D").Shape = new BoxShape3D(){Size = new Vector3(viewport.Size.X, 0.5f, viewport.Size.Y)};
-		lineIndicator = GetNode<GpuParticles3D>("Laser");
-		lineIndicator.Visible = false;
 
 		// score group
 		scoreLabel = GetTree().GetFirstNodeInGroup("score") as Label;
@@ -234,7 +226,6 @@ public partial class Main : Node3D
 		Vector3 castPos = castPosition(pos);
 		lastPos = new Vector3(castPos.X, lastPos.Y, lastPos.Z);
 		if(activeItem != null && activeItem.Freeze) activeItem.Position = lastPos;
-		lineIndicator.GlobalPosition = new Vector3(lastPos.X,  lastPos.Y-0.5f, lastPos.Z);
    }
 
 
@@ -263,6 +254,7 @@ public partial class Main : Node3D
 			toPlayItems.Add(SpawnJewel());
 		}
 		activeItem = toPlayItems[0];
+		activeItem.PlayLaser();
 		activeItem.GravityScale = 5f;
 		if (toPlayContainer.IsAncestorOf(activeItem)){
 			toPlayContainer.RemoveChild(activeItem);
@@ -270,9 +262,6 @@ public partial class Main : Node3D
 		toPlayItems.RemoveAt(0);
 		activeItem.Position = lastPos;
 		activeItem.isActive = true;
-		lineIndicator.GlobalPosition = new Vector3(lastPos.X,  lastPos.Y-0.5f, lastPos.Z);
-		lineIndicator.Visible = true;
-		// position the all jewels like 3d slider
 		for (int i = 0; i < toPlayItems.Count; i++){
 			var item = toPlayItems[i];
 			item.Position = new Vector3(
@@ -309,90 +298,12 @@ public partial class Main : Node3D
 		if(activeItem == null) return;
 		activeItem.Freeze = false;
 		activeItem.isActive = false;
-		lineIndicator.Visible = false;
+		activeItem.DestroyLaser();
 		activeItem = null;
-		audioPlayer.Stream = audioStreams["drop"];
-		audioPlayer.Play();
 		GetTree().CreateTimer(0.5f).Timeout += ()=>{
 			resPawn();
 		};
 	}
-
-	GpuParticles3D LaserParticles(){
-		var mergeParticles = new GpuParticles3D
-        {
-			
-			DrawPasses = 1,
-			DrawPass1 = new SphereMesh(){
-				Material = new StandardMaterial3D(){
-					AlbedoColor = Colors.BlueViolet,
-				},
-				Radius = 0.05f,
-			},
-			Amount = 64,
-            Lifetime = 5f,
-			CollisionBaseSize = 1f,
-			ProcessMaterial = new ParticleProcessMaterial(){
-				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
-				CollisionBounce = 0.8f,
-			},
-			Emitting = true,
-			VisibilityAabb = new Aabb(new Vector3(-50f, -50f, -5f), new Vector3(50f, 50f, 50f)),
-			Name = "LineParticle",
-			Visible = false,
-			SpeedScale = 50f,
-			
-			
-        };
-		return mergeParticles;
-	}
-
-	void MergingParticles(Jewel jewel){
-        var mergeParticles = new GpuParticles3D
-        {
-			
-			DrawPasses = 1,
-			DrawPass1 = new QuadMesh(){
-				Material = new StandardMaterial3D(){
-					
-					AlbedoTexture = GD.Load<Texture2D>("res://Assets/Textures/Sprites/1.png"),
-					Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-					BlendMode = BaseMaterial3D.BlendModeEnum.Add,
-				},
-				Size = Vector2.One * 1f
-			},
-
-            OneShot = true,
-			Amount = 64,
-            Lifetime = 1f,
-			ProcessMaterial = new ParticleProcessMaterial(){
-				LifetimeRandomness = 1f,
-				Spread = 180f,
-				InitialVelocityMax = 1f,
-				InitialVelocityMin = 0.2f,
-				CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
-				CollisionBounce = 0.2f,
-				EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
-				EmissionRingAxis = new Vector3(0f, 0f, 1f),
-				EmissionRingRadius = 1.5f,
-				EmissionRingInnerRadius = 0.5f,
-				Gravity = Vector3.Zero,
-				ParticleFlagDisableZ = true,
-				RadialVelocityMin = 1f,
-				RadialVelocityMax = 3f,
-				ScaleMin = 0.2f,
-				ScaleMax = 1f,
-				HueVariationMin = 0f,
-				HueVariationMax = 5f,
-				// VelocityPivot = Vector3.One,
-				// Direction = Vector3.One,
-			},
-			Emitting = true,
-        };
-        jewel.AddChild(mergeParticles);
-	}
-
-
 
     private void Merge(Jewel current, Jewel target)
     {
@@ -411,16 +322,14 @@ public partial class Main : Node3D
 			jewel.Level = level;
 			jewel.Position = newPos;
 			jewel.Scale = Vector3.One * getScaleFactor(level);
+			
 			// remove jewel from list
 			activeItems.Remove(current);
 			activeItems.Remove(target);
 			toDropItems.Add(current);
 			toDropItems.Add(target);
 			AddChild(jewel);
-			// sound
-			audioPlayer.Stream = audioStreams["merge"];
-			audioPlayer.Play();
-			MergingParticles(jewel);
+			jewel.PlayMerge();
 			score += current.Level;
 			jewel.Merge += Merge;
 
