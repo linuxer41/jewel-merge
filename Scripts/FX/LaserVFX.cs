@@ -42,7 +42,6 @@ public partial class LaserVFX : GpuParticles3D
         Amount = 150;
         Lifetime = 3f;
         SpeedScale = 4.0f;
-        FixedFps = 60;
         CollisionBaseSize = 1.0f; ;
         VisibilityAabb = new Aabb(-1.00001f, -45.59f, -1.00001f,  2.00002f, 46.5893f, 2.00002f);;
         LocalCoords = true;

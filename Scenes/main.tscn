@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://5lj5v1vhnkfx"]
+[gd_scene load_steps=7 format=3 uid="uid://5lj5v1vhnkfx"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_m2b23"]
 [ext_resource type="Texture2D" uid="uid://do5qoawle7qun" path="res://Assets/Textures/Images/score.png" id="2_2gied"]
+[ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="3_s1xsx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -77,3 +78,7 @@ text = "Puntos: "
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 sky_mode = 1
+
+[node name="CanvasLayer" parent="." instance=ExtResource("3_s1xsx")]
+offset = Vector2(0, 120)
+transform = Transform2D(1, 0, 0, 1, 0, 120)
