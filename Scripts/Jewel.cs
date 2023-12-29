@@ -119,9 +119,7 @@ public partial class Jewel : RigidBody3D
         // RotateY(0.5f * (float)delta);
         if (Freeze){
             if(isActive){
-                RotateX(0.5f * (float)delta);
-                // GlobalRotate(Vector3.Back, 0.5f * (float)delta);
-                // GetChild<MeshInstance3D>(0).RotateObjectLocal(Vector3.Back, 0.5f * (float)delta);
+                GetChild<MeshInstance3D>(0).RotateY(0.5f * (float)delta);
             } else{
                 GetChild<MeshInstance3D>(0).RotateY(0.5f * (float)delta);
             }
