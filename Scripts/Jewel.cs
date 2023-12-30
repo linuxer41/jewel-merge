@@ -18,7 +18,7 @@ public partial class Jewel : RigidBody3D
 
     public Vector3 TargetVelocity {get; set; } = Vector3.Zero;
 
-    public LaserVFX laserVFX;
+    public Laser laser;
     public MergeVFX mergeVFX;
 
 	[Signal]
@@ -73,6 +73,7 @@ public partial class Jewel : RigidBody3D
         ContactMonitor = true;
 		MaxContactsReported = 20;
         GravityScale = 1f;
+        Freeze = true;
         SetPhysicsProcess(true);
         AddChild(mergeAudioPlayer);
         AddChild(dropAudioPlayer);
@@ -81,24 +82,22 @@ public partial class Jewel : RigidBody3D
     }
     private void OnBodyEntered(Node body)
     {
-        if(!merging){
-           	if (body is Jewel jewel) {
-                collisionTimes++;
-                if(jewel.Level == Level) {
-                    GD.Print("Jewel: Body entered: " + body.Name);
-                    if(!Freeze && !jewel.Freeze){
-                        EmitSignal(SignalName.Merge, this, body);
-                    }
-                }
-            } else if( body.Name == "Floor") {
-                collisionTimes++;
+        bool isJewel = body is Jewel;
+        bool isFloor = body.Name == "Floor";
+        if(!merging && !body.IsQueuedForDeletion() && !IsQueuedForDeletion()) {
+
+            if (body is Jewel jewel && jewel.Level == Level && !Freeze) {
+                EmitSignal(SignalName.Merge, this, body);
             }
         }
+        if (isJewel || isFloor) {
+            collisionTimes++;
+        }
+        
         if(collisionTimes == 1){
             collisionAudioPlayer.Play();
-            GravityScale = 1f;
+            GravityScale = 1f; 
         }
-
     }
 
 
@@ -129,6 +128,7 @@ public partial class Jewel : RigidBody3D
     }
 
     public void PlayMerge(){
+        Freeze = false;
         mergeVFX = new MergeVFX(){
             Level = Level,
             colorA = levelColors[Level - 1],
@@ -142,14 +142,16 @@ public partial class Jewel : RigidBody3D
         };
     }
     public void PlayLaser(){
-        laserVFX = new LaserVFX(){
+        laser = new Laser(){
             color = levelColors[Level],
         };
-        AddChild(laserVFX);
+        AddChild(laser);
     }
 
-    public void DestroyLaser(){
+    public void Drop(){
+        Freeze = false;
+        GravityScale = 5f;
         dropAudioPlayer.Play();
-        laserVFX.QueueFree();
+        laser.QueueFree();
     }
 }

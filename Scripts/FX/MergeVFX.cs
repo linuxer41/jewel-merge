@@ -10,13 +10,19 @@ public partial class MergeVFX : GpuParticles3D
 	{
 		DrawPass1 = new QuadMesh(){
 			Material = new StandardMaterial3D(){
-				AlbedoTexture = GD.Load<CompressedTexture2D>($"res://Assets/Textures/Sprites/{Level}.png"),
+				AlbedoTexture = GD.Load<CompressedTexture2D>("res://Assets/Textures/Sprites/spriteSheet.png"),
 				AlbedoColor = colorB,
 				VertexColorUseAsAlbedo = true,
+				BillboardMode = BaseMaterial3D.BillboardModeEnum.Particles,
 				Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
 				BlendMode = BaseMaterial3D.BlendModeEnum.Add,
+				ParticlesAnimHFrames = 4,
+				ParticlesAnimVFrames = 3,
+				ParticlesAnimLoop = true,
+				
+
 			},
-			Size = Vector2.One * 1f,
+			Size = Vector2.One * 2f,
 		};
 
 		OneShot = true;
@@ -25,36 +31,28 @@ public partial class MergeVFX : GpuParticles3D
 		ProcessMaterial = new ParticleProcessMaterial(){
 			LifetimeRandomness = 1f,
 			Spread = 180f,
-			InitialVelocityMax = 5f,
-			InitialVelocityMin = 0.2f,
-			CollisionMode = ParticleProcessMaterial.CollisionModeEnum.Rigid,
-			CollisionBounce = 0.2f,
+			InitialVelocityMax = 10f,
+			DampingMax = 10f,
 			EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
 			EmissionRingAxis = new Vector3(0f, 0f, 1f),
 			EmissionRingRadius = 1.5f,
 			EmissionRingInnerRadius = 0.5f,
 			Gravity = Vector3.Zero,
-			ParticleFlagDisableZ = true,
-			RadialVelocityMin = 0.5f,
-			RadialVelocityMax = 3f,
-			ScaleMin = 0.3f,
-			ScaleMax = 2.5f,
+			ScaleMin = 0.5f,
+			ScaleMax = 1.5f,
 			Color = Colors.White,
 			ColorRamp = new GradientTexture2D(){
 				Gradient = new Gradient(){
-					Colors = new Color[]{colorA, colorB},
-					Offsets = new float[]{0.1f, 0.55f},
+					Colors = new Color[]{Colors.White, colorA, colorB},
+					Offsets = new float[]{0.1f, 0.5f, 0.9f},
 					InterpolationMode = Gradient.InterpolationModeEnum.Cubic,
 				},
 				
 			},
+			AnimSpeedMax = 1f,
+			AnimOffsetMax = 4f,
 		};
 		Emitting = true;
 		SetDisableScale(true);
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 }

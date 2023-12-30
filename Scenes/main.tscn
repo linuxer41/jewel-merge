@@ -80,3 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 sky_mode = 1
 
 [node name="CanvasLayer" parent="." instance=ExtResource("3_s1xsx")]
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+
+[node name="Node3D" type="Node3D" parent="."]
