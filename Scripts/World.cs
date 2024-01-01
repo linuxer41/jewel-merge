@@ -1,6 +1,4 @@
-using System;
 using Godot;
-using Godot.Collections;
 
 public partial class World : Node3D
 {
@@ -109,11 +107,11 @@ public partial class World : Node3D
         toPlayContainer = new Node3D(){
 			Name = "ToPlayContainer",
 			Position = new Vector3(
-				(-Width / 2) + 2f, // X position
+				(-Width / 2) + 4f, // X position
 				(Height / 2) - 2f, // Y position
 				-4f
 			),
-			Scale= Vector3.One * 0.5f,
+			Scale= Vector3.One * 0.7f,
 		};
 
 		AudioStream audioStream = (AudioStream)GD.Load("res://Assets/Sound/background.mp3");

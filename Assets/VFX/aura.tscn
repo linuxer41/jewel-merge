@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://m6dmreauilwp"]
+
+[ext_resource type="Texture2D" uid="uid://bjlwceg5umcvu" path="res://Assets/Textures/Sprites/effect.png" id="1_a2clt"]
+
+[sub_resource type="Curve" id="Curve_3umtn"]
+max_value = 360.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hd1jd"]
+curve = SubResource("Curve_3umtn")
+
+[sub_resource type="Curve" id="Curve_4kmxf"]
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.155488, 2), 0.0, -4.06985, 0, 0, Vector2(0.390244, 1.04458), 0.0, 0.0, 0, 0, Vector2(0.64939, 1.93735), 0.0, 0.0, 0, 0, Vector2(0.990854, 0.99759), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_jocid"]
+curve = SubResource("Curve_4kmxf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8qsyy"]
+particle_flag_disable_z = true
+angle_curve = SubResource("CurveTexture_hd1jd")
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_jocid")
+anim_offset_min = 0.2
+anim_offset_max = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ln602"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_a2clt")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 4
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_pracn"]
+material = SubResource("StandardMaterial3D_ln602")
+size = Vector2(0.5, 0.5)
+
+[node name="aura" type="GPUParticles3D"]
+emitting = false
+amount = 1
+one_shot = true
+fixed_fps = 0
+process_material = SubResource("ParticleProcessMaterial_8qsyy")
+draw_pass_1 = SubResource("QuadMesh_pracn")

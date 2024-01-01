@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://do3gql4e0ftqc"]
+[gd_scene load_steps=9 format=3 uid="uid://18cvxywg0ed2"]
 
 [ext_resource type="PackedScene" uid="uid://buhmhan4lhgw1" path="res://Assets/Objects/circle.glb" id="1_ibhbq"]
 [ext_resource type="Script" path="res://Scripts/Jewel.cs" id="2_bgjp0"]
@@ -6,11 +6,100 @@
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0hv3r"]
 points = PackedVector3Array(-0.000195742, 0.999984, -1, -0.000195742, 0.968301, -0.996476, -0.382733, 0.999984, -0.924041, -0.28563, 1.22112, -0.689311, 0.285435, 1.22112, -0.689311, 0.382537, 0.999984, -0.924041, -0.0332811, 0.0071789, -0.0800705, -0.381363, 0.968301, -0.920517, 0.381167, 0.968301, -0.920517, 0.0330853, 0.0071789, -0.0800705, -0.704581, 0.968301, -0.704581, -0.707126, 0.999984, -0.707126, -0.361002, 1.31758, -0.361002, -0.000195742, 1.31758, -0.510572, -0.689311, 1.22112, -0.28563, 0.360807, 1.31758, -0.361002, 0.689115, 1.22112, -0.28563, 0.70693, 0.999984, -0.707126, 0.704385, 0.968301, -0.704581, -0.0800705, 0.0071789, -0.0332811, 0.0798748, 0.0071789, -0.0332811, -0.920517, 0.968301, -0.381363, -0.924041, 0.999984, -0.382733, -0.510572, 1.31758, -0.000195742, -1, 0.999984, -0.000195742, -0.689311, 1.22112, 0.285435, 0.510376, 1.31758, -0.000195742, 0.689115, 1.22112, 0.285435, 1, 0.999984, -0.000195742, 0.923845, 0.999984, -0.382733, 0.920321, 0.968301, -0.381363, -0.0800705, 0.0071789, 0.0330853, -0.996476, 0.968301, -0.000195742, 0.0798748, 0.0071789, 0.0330853, 0.99628, 0.968301, -0.000195742, -0.361002, 1.31758, 0.360807, -0.924041, 0.999984, 0.382537, -0.707126, 0.999984, 0.70693, -0.28563, 1.22112, 0.689115, 0.360807, 1.31758, 0.360807, 0.70693, 0.999984, 0.70693, 0.923845, 0.999984, 0.382537, 0.285435, 1.22112, 0.689115, -0.0332811, 0.0071789, 0.0798748, -0.704581, 0.968301, 0.704385, -0.920517, 0.968301, 0.381167, 0.0330853, 0.0071789, 0.0798748, 0.920321, 0.968301, 0.381167, 0.704385, 0.968301, 0.704385, -0.000195742, 1.31758, 0.510376, -0.382733, 0.999984, 0.923845, -0.000195742, 0.999984, 1, 0.382537, 0.999984, 0.923845, -0.381363, 0.968301, 0.920321, -0.000195742, 0.968301, 0.99628, 0.381167, 0.968301, 0.920321)
 
-[node name="cricle" instance=ExtResource("1_ibhbq")]
+[sub_resource type="Animation" id="Animation_2jex5"]
+resource_name = "merge"
+length = 0.5
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder_014")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.0135368, 1, 1, 1, 1, 0.193896, 1, 1.2, 1.2, 1.2, 0.397613, 1, 1, 1, 1)
+tracks/1/type = "scale_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0.0203052, 1, 1, 1, 1, 0.207433, 1, 1.2, 1.2, 1.2, 0.397613, 1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_svd4p"]
+resource_name = "spawn"
+length = 0.5
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder_014")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.0135368, 1, 0.2, 0.2, 0.2, 0.193896, 1, 1.2, 1.2, 1.2, 0.397613, 1, 1, 1, 1)
+tracks/1/type = "scale_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0.0203052, 1, 0, 0, 0, 0.207433, 1, 1.2, 1.2, 1.2, 0.397613, 1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_yercp"]
+resource_name = "rotateZ"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder_014")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 2.5, 1, 0, 0, 1, 0, 5, 1, 0, 0, 0, -1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0.2, 1, 0, 0, 0, 1, 2.5, 1, 0, 0, 1, 0, 5, 1, 0, 0, 0, -1)
+
+[sub_resource type="Animation" id="Animation_cd3pa"]
+resource_name = "rotateY"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder_014")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 2.5, 1, 0, 1, 0, 0, 5, 1, 0, 0, 0, -1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0.2, 1, 0, 0, 0, 1, 2.5, 1, 0, 0, 0, 0, 5, 1, 0, 1, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_llu3u"]
+_data = {
+"merge": SubResource("Animation_2jex5"),
+"rotateY": SubResource("Animation_cd3pa"),
+"rotateZ": SubResource("Animation_yercp"),
+"spawn": SubResource("Animation_svd4p")
+}
+
+[node name="root" instance=ExtResource("1_ibhbq")]
 script = ExtResource("2_bgjp0")
 
 [node name="Cylinder_014" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(-0.106447, -0.994318, 0, 0.994318, -0.106447, 0, 0, 0, 1, 0, 0, 0)
+top_level = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(0.0206669, -0.999786, 0, 0.999786, 0.0206669, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_0hv3r")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_llu3u")
+}

@@ -10,15 +10,16 @@ public partial class MergeVFX : GpuParticles3D
 	{
 		DrawPass1 = new QuadMesh(){
 			Material = new StandardMaterial3D(){
-				AlbedoTexture = GD.Load<CompressedTexture2D>("res://Assets/Textures/Sprites/spriteSheet.png"),
+				AlbedoTexture = GD.Load<CompressedTexture2D>("res://Assets/Textures/Sprites/stars.png"),
 				AlbedoColor = colorB,
 				VertexColorUseAsAlbedo = true,
 				BillboardMode = BaseMaterial3D.BillboardModeEnum.Particles,
 				Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-				BlendMode = BaseMaterial3D.BlendModeEnum.Add,
+				BlendMode = BaseMaterial3D.BlendModeEnum.Mix,
+				ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
 				ParticlesAnimHFrames = 4,
 				ParticlesAnimVFrames = 3,
-				ParticlesAnimLoop = true,
+				// ParticlesAnimLoop = true,
 				
 
 			},
@@ -26,20 +27,19 @@ public partial class MergeVFX : GpuParticles3D
 		};
 
 		OneShot = true;
-		Amount = 60;
-		Lifetime = 1.2f;
+		Amount = 12;
+		Lifetime = 2f;
+		//Explosiveness =1;
 		ProcessMaterial = new ParticleProcessMaterial(){
-			LifetimeRandomness = 1f,
-			Spread = 180f,
+			Spread = 90f,
+			InitialVelocityMin = 2f,
 			InitialVelocityMax = 10f,
-			DampingMax = 10f,
+			DampingMax = 5f,
 			EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Ring,
 			EmissionRingAxis = new Vector3(0f, 0f, 1f),
-			EmissionRingRadius = 1.5f,
+			EmissionRingRadius = 1f,
 			EmissionRingInnerRadius = 0.5f,
 			Gravity = Vector3.Zero,
-			ScaleMin = 0.5f,
-			ScaleMax = 1.5f,
 			Color = Colors.White,
 			ColorRamp = new GradientTexture2D(){
 				Gradient = new Gradient(){
@@ -49,10 +49,26 @@ public partial class MergeVFX : GpuParticles3D
 				},
 				
 			},
-			AnimSpeedMax = 1f,
-			AnimOffsetMax = 4f,
+			AnimOffsetMin = 1f,
+			AnimOffsetMax = 1f,
+			Direction = new Vector3(0f, 1f, 0f),
+			AngularVelocityCurve = new CurveTexture(){
+				Curve = new Curve(){
+					MinValue = 0f,
+					MaxValue = 360f,
+					_Data = new Godot.Collections.Array{new Vector2(0, 1), 0.0, 0.0, 0, 0, new Vector2(1, 360), 0.0, 0.0, 0, 0},
+				}
+			},
+			
+			ScaleCurve = new CurveTexture(){
+				Curve = new Curve(){
+					MinValue = 0f,
+					MaxValue = 1f,
+					_Data = new Godot.Collections.Array{new Vector2(0, 1), 0.0, 0.0, 0, 0, new Vector2(1, 0.00105274f), 0.0, 0.0, 0, 0},
+				}
+			},
+
 		};
 		Emitting = true;
-		SetDisableScale(true);
 	}
 }
