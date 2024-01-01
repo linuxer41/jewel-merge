@@ -130,13 +130,18 @@ public partial class GameController
 
     Jewel InstantiateJewel(int _level = 0){
 
-		int level = _level == 0 ? rng.RandiRange(1, MAX_LEVEL - 5): _level;
+		int level = _level == 0 ? rng.RandiRange(1, MAX_LEVEL - 3): _level;
 		var obj = objects[level];
 		Jewel jewel = obj.Instantiate<Jewel>();
 		jewel.Level = level;
+        jewel.Scale = Vector3.One * getScaleFactor(level);
 		jewel.Merge += Merge;
 		return jewel;
     }
+
+    private float getScaleFactor(int level){
+		return Mathf.Lerp(1f, 2.5f, (level - 1f) / (MAX_LEVEL - 1f)); 
+	}
 
     private void Merge(Jewel current, Jewel target)
     {
