@@ -137,7 +137,7 @@ public partial class Jewel : RigidBody3D
         // starsVFX.Position = new Vector3(0f, 0f, -5f);
         ((StandardMaterial3D)((QuadMesh)starsVFX.DrawPass1).Material).AlbedoColor = levelColors[Level];
         ((StandardMaterial3D)((QuadMesh)auraVFX.DrawPass1).Material).AlbedoColor = levelColors[Level];
-        ((QuadMesh)auraVFX.DrawPass1).Size = Vector2.One * 2f;
+        ((QuadMesh)auraVFX.DrawPass1).Size = Vector2.One * 4f;
         ((QuadMesh)starsVFX.DrawPass1).Size = Vector2.One * 2f;
         auraVFX.Emitting = true;
         starsVFX.Emitting = true;

@@ -53,6 +53,7 @@ material = SubResource("StandardMaterial3D_alvhe")
 [node name="stars" type="GPUParticles3D"]
 emitting = false
 amount = 16
+lifetime = 3.0
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_ffnhi")
 draw_pass_1 = SubResource("QuadMesh_d8jm1")

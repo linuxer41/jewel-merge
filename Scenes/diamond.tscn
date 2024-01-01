@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ds02uh04juiit"]
+[gd_scene load_steps=18 format=3 uid="uid://ds02uh04juiit"]
 
 [ext_resource type="PackedScene" uid="uid://4oel7mi6o30" path="res://Assets/Objects/diamod.glb" id="1_v424a"]
 [ext_resource type="Script" path="res://Scripts/Jewel.cs" id="2_bwnth"]
@@ -88,17 +88,14 @@ _data = {
 "spawn": SubResource("Animation_svd4p")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v1o1n"]
-animation = &"spawn"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_of2xm"]
+animation = &"rotateZ"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lis6a"]
 animation = &"merge"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mujuq"]
 animation = &"rotateY"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_of2xm"]
-animation = &"rotateZ"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p4axv"]
 animation = &"spawn"
@@ -110,32 +107,26 @@ advance_mode = 2
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p3wmc"]
-switch_mode = 2
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_w3m82"]
-states/activate/node = SubResource("AnimationNodeAnimation_v1o1n")
-states/activate/position = Vector2(626, 100)
+states/activate/node = SubResource("AnimationNodeAnimation_of2xm")
+states/activate/position = Vector2(787, 101)
 states/merge/node = SubResource("AnimationNodeAnimation_lis6a")
 states/merge/position = Vector2(776.715, 194)
 states/rotateY/node = SubResource("AnimationNodeAnimation_mujuq")
 states/rotateY/position = Vector2(485, 99)
-states/rotateZ/node = SubResource("AnimationNodeAnimation_of2xm")
-states/rotateZ/position = Vector2(787, 101)
 states/spawn/node = SubResource("AnimationNodeAnimation_p4axv")
 states/spawn/position = Vector2(342, 97)
-transitions = ["Start", "spawn", SubResource("AnimationNodeStateMachineTransition_feahq"), "spawn", "rotateY", SubResource("AnimationNodeStateMachineTransition_xnjcd"), "activate", "rotateZ", SubResource("AnimationNodeStateMachineTransition_p3wmc")]
+transitions = ["Start", "spawn", SubResource("AnimationNodeStateMachineTransition_feahq"), "spawn", "rotateY", SubResource("AnimationNodeStateMachineTransition_xnjcd")]
 graph_offset = Vector2(110.715, 0)
 
 [node name="Root" instance=ExtResource("1_v424a")]
 script = ExtResource("2_bwnth")
 
 [node name="Diamond" parent="." index="0"]
-transform = Transform3D(-0.640752, 0, -0.767748, 0, 1, 0, 0.767748, 0, -0.640752, 0, 0, 0)
+transform = Transform3D(-0.97468, 0, -0.223606, 0, 1, 0, 0.223606, 0, -0.97468, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
-transform = Transform3D(-0.640752, 0, -0.767748, 0, 1, 0, 0.767748, 0, -0.640752, 0, 0, 0)
+transform = Transform3D(-0.897085, 0, 0.441858, 0, 1, 0, -0.441858, 0, -0.897085, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_p22yf")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
