@@ -1,8 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://5lj5v1vhnkfx"]
+[gd_scene load_steps=9 format=3 uid="uid://5lj5v1vhnkfx"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_m2b23"]
 [ext_resource type="Texture2D" uid="uid://do5qoawle7qun" path="res://Assets/Textures/Images/score.png" id="2_2gied"]
 [ext_resource type="PackedScene" uid="uid://cggqb75a8w8r" path="res://addons/debug_menu/debug_menu.tscn" id="3_s1xsx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gsq7x"]
+
+[sub_resource type="TextMesh" id="TextMesh_35tom"]
+material = SubResource("StandardMaterial3D_gsq7x")
+text = "hello wolrd"
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tnaav"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -20,6 +26,9 @@ glow_enabled = true
 [node name="main" type="Node3D"]
 script = ExtResource("1_m2b23")
 
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+mesh = SubResource("TextMesh_35tom")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_er6dd")
 
@@ -29,6 +38,7 @@ projection = 1
 size = 30.0
 
 [node name="Control" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -81,6 +91,4 @@ sky_mode = 1
 
 [node name="CanvasLayer" parent="." instance=ExtResource("3_s1xsx")]
 
-[node name="RayCast3D" type="RayCast3D" parent="."]
-
-[node name="Node3D" type="Node3D" parent="."]
+[node name="SubViewport" type="SubViewport" parent="."]

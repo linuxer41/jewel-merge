@@ -1,6 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://bepb5ny6nvoij"]
+[gd_scene load_steps=11 format=3 uid="uid://bepb5ny6nvoij"]
 
 [ext_resource type="Texture2D" uid="uid://6h8ck7djcc4j" path="res://Assets/Textures/Sprites/stars.png" id="1_d8imw"]
+
+[sub_resource type="Curve" id="Curve_no6mq"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fmlp5"]
+curve = SubResource("Curve_no6mq")
 
 [sub_resource type="Curve" id="Curve_x7id5"]
 min_value = -360.0
@@ -19,21 +26,21 @@ point_count = 2
 curve = SubResource("Curve_m747d")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ffnhi"]
+lifetime_randomness = 1.0
 particle_flag_disable_z = true
 emission_shape = 6
 emission_ring_axis = Vector3(0, 0, 1)
-emission_ring_height = 1.0
-emission_ring_radius = 1.0
-emission_ring_inner_radius = 0.0
+emission_ring_height = 2.0
+emission_ring_radius = 2.0
+emission_ring_inner_radius = 1.0
 angle_min = 1.0
 angle_max = 10.0
 angle_curve = SubResource("CurveTexture_kbym6")
-direction = Vector3(0, 1, 0)
+direction = Vector3(0, 0, 0)
 spread = 0.0
-initial_velocity_min = 1.0
-initial_velocity_max = 5.0
 gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_rf13a")
+alpha_curve = SubResource("CurveTexture_fmlp5")
 anim_offset_max = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_alvhe"]
@@ -52,8 +59,8 @@ material = SubResource("StandardMaterial3D_alvhe")
 
 [node name="stars" type="GPUParticles3D"]
 emitting = false
-amount = 16
-lifetime = 3.0
+amount = 32
 one_shot = true
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_ffnhi")
 draw_pass_1 = SubResource("QuadMesh_d8jm1")

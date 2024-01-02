@@ -1,11 +1,32 @@
 using Godot;
 using Godot.Collections;
 
+public enum LocationEnum
+{
+    Spawn,
+    Current,
+    Active,
+}
+
+public enum OriginEnum
+{
+    Spawn,
+    Merge,
+}
+
+public enum StateEnum
+{
+    Normal,
+    Merging,
+}
 public partial class Jewel : RigidBody3D
 {
-    public int Level {get; set; }
-    public bool isActive {get; set; } = false;
-    public bool merging {get; set; } = false;
+    public int Level {get; set; } = 1;
+    public float ScaleFactor {get; set; } = 1f;
+    public LocationEnum Location {get; set; } = LocationEnum.Spawn;
+    public OriginEnum Origin {get; set; } = OriginEnum.Spawn;
+    public StateEnum State {get; set; } = StateEnum.Normal;
+    public Vector3 NewPosition {get; set; } = Vector3.Zero;
     AudioStreamPlayer dropAudioPlayer;
 	AudioStreamPlayer collisionAudioPlayer;
 	AudioStreamPlayer mergeAudioPlayer;
@@ -68,6 +89,7 @@ public partial class Jewel : RigidBody3D
             Stream = audioStreams["collision"],
         };
         // animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        Scale = Vector3.One * ScaleFactor;
         animationTree = GetNode<AnimationTree>("AnimationTree");
         animationTree.Active = true;
         playback = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
@@ -76,16 +98,14 @@ public partial class Jewel : RigidBody3D
         GetChild<MeshInstance3D>(0).MaterialOverride = shaderMaterial;
 		BodyEntered += OnBodyEntered;
         shaderMaterial.SetShaderParameter("Color", color);
+        Freeze = true;
         AxisLockLinearZ = true;
         ContactMonitor = true;
-        Freeze = true;
 		MaxContactsReported = 20;
-        SetPhysicsProcess(true);
         AddChild(mergeAudioPlayer);
         AddChild(dropAudioPlayer);
         AddChild(collisionAudioPlayer);
-        
-        GD.Print($"Jewel {Name} created");
+        SetPhysicsProcess(true);
     }
 
     private void OnBodyEntered(Node body)
@@ -93,51 +113,38 @@ public partial class Jewel : RigidBody3D
         // GD.Print($"Jewel {Name} collided with: {body.Name}" );
         bool isJewel = body is Jewel;
         bool isFloor = body.Name == "Floor";
+        // GD.Print($"Jewel {Name} collided with: {body.Name}, isJewel: {isJewel}, isFloor: {isFloor}, lOCATION: {Location}, STATE: {State}" );
         // animationPlayer.Stop();
-        if(!merging && !body.IsQueuedForDeletion() && !IsQueuedForDeletion()) {
+        if(Location.Equals(LocationEnum.Active) && !body.IsQueuedForDeletion() && !IsQueuedForDeletion()) {
 
-            if (body is Jewel jewel && jewel.Level == Level && !merging) {
+            if (body is Jewel jewel && jewel.Level == Level && State.Equals(StateEnum.Normal) && !State.Equals(StateEnum.Merging)) {
+                // State = StateEnum.Merging;
                 EmitSignal(SignalName.Merge, this, body);
             }
         }
-        if (isJewel || isFloor) {
+        if ((isJewel || isFloor) && Location.Equals(LocationEnum.Active)) {
             collisionTimes++;
         }
         
         if(collisionTimes == 1){
-            collisionAudioPlayer.Play();
-            // playback.Stop();
-            // animationTree.Active = false;
-            GravityScale = 1f; 
+            GravityScale = 1;
+            if(Origin != OriginEnum.Merge){
+                collisionAudioPlayer.Play();
+            }
+            
         }
     }
 
     public void PlayMerge(){
-        GravityScale = 1f;
         Freeze = false;
-        FreezeMode = FreezeModeEnum.Kinematic;
         playback.Travel("merge");
-        // AuraVFX auraVFX = new AuraVFX(){
-        //     Level = Level,
-        //     color = levelColors[Level],
-        //     Position = new Vector3(0f, 0f, -1f),
-           
-        // };
-        // MergeVFX mergeVFX = new MergeVFX(){
-        //     Level = Level,
-        //     colorA = levelColors[Level - 1],
-        //     colorB = levelColors[Level],
-           
-        // };
-        // AddChild(auraVFX);
-        // AddChild(mergeVFX);
         GpuParticles3D auraVFX = GetNode<GpuParticles3D>("aura");
         GpuParticles3D starsVFX = GetNode<GpuParticles3D>("stars");
-        auraVFX.Position = new Vector3(0f, 0f, -5f);
-        // starsVFX.Position = new Vector3(0f, 0f, -5f);
-        ((StandardMaterial3D)((QuadMesh)starsVFX.DrawPass1).Material).AlbedoColor = levelColors[Level];
-        ((StandardMaterial3D)((QuadMesh)auraVFX.DrawPass1).Material).AlbedoColor = levelColors[Level];
-        ((QuadMesh)auraVFX.DrawPass1).Size = Vector2.One * 4f;
+        auraVFX.Scale = Vector3.One * ScaleFactor;
+        Color color = levelColors[Level];
+        ((StandardMaterial3D)((QuadMesh)starsVFX.DrawPass1).Material).AlbedoColor = color;
+        ((StandardMaterial3D)((QuadMesh)auraVFX.DrawPass1).Material).AlbedoColor = new Color(color.R, color.G, color.B, 0.5f);
+        ((QuadMesh)auraVFX.DrawPass1).Size = Vector2.One * 2f;
         ((QuadMesh)starsVFX.DrawPass1).Size = Vector2.One * 2f;
         auraVFX.Emitting = true;
         starsVFX.Emitting = true;
@@ -147,12 +154,16 @@ public partial class Jewel : RigidBody3D
         GetTree().CreateTimer(0.3).Timeout += ()=>{
             // mergeVFX.QueueFree(2);
             // Freeze = false;
+
+            State = StateEnum.Normal;
         };
     }
-    public void PlayLaser(){
+    public void Select(){
+        Location = LocationEnum.Current;
         playback.Travel("activate");
         laser = new Laser(){
             color = levelColors[Level],
+            Position = new Vector3(0f, -ScaleFactor + 1f, 0f),
         };
         AddChild(laser);
         // animationPlayer.Play("rotateZ");
@@ -162,11 +173,20 @@ public partial class Jewel : RigidBody3D
     {
         // animationPlayer.Stop();
         Freeze = false;
+        GravityScale = 5;
+        Location = LocationEnum.Active;
         playback.Stop();
         animationTree.Active = false;
         laser.QueueFree();
-        GravityScale = 5f;
         dropAudioPlayer.Play();
     }
 
+    public override void _IntegrateForces(PhysicsDirectBodyState3D state)
+    {
+        // Move to new position
+        if (!NewPosition.Equals(Vector3.Zero)){
+            state.Transform = new Transform3D(state.Transform.Basis, NewPosition);
+            NewPosition = Vector3.Zero;
+        }
+    }
 }

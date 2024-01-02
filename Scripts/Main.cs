@@ -7,7 +7,6 @@ public partial class Main : Node3D
 
 	Camera3D mainCamera;
 
-	int score = 0;
 	bool dragging = false;
 
 	Label scoreLabel;
@@ -23,16 +22,18 @@ public partial class Main : Node3D
 		float width = Mathf.Abs(maxPos.X - minPOs.X);
 		float height = Mathf.Abs(maxPos.Y - minPOs.Y);
 		GD.Print("MinPos: " + minPOs + " MaxPos: " + maxPos + " Viewport size: " + viewport.Size + " Viewport position: " + viewport.Position);
+		scoreLabel = GetTree().GetFirstNodeInGroup("score") as Label;
+		scoreLabel.AddThemeFontSizeOverride("font_size", 30);
+		scoreLabel.AddThemeColorOverride("font_color", Colors.Green);
 		gameController = new GameController(height, width, mainCamera);
 		gameController.LoadWorld(this);
+		
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		// remove activeItems that have been dropped
-		// toPlayItems.Clear();
-		// scoreLabel.Text = "Score: " + score;
+		scoreLabel.Text = "Score: " + gameController.Score;
 
 	}
 

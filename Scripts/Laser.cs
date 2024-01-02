@@ -4,7 +4,7 @@ using Godot.Collections;
 public partial class Laser : RayCast3D
 {
    public Color color {get; set; } = Colors.Red;
-   public LaserVFX endVFX {get; set; }
+   public GpuParticles3D endVFX {get; set; }
    MeshInstance3D mesh;
    public override void _Ready(){
             // Crea el Mesh
@@ -27,10 +27,10 @@ public partial class Laser : RayCast3D
             },
         };
         TargetPosition = new Vector3(0f, -50f, 0f);
-        endVFX = new LaserVFX(){
-            color = color,
-        };
+        endVFX = ResourceLoader.Load<PackedScene>("res://Assets/VFX/fire.tscn").Instantiate<GpuParticles3D>();
+        // endVFX = GD.Load<GpuParticles3D>("res://Assets/VFX/fire.tscn");
         SetDisableScale(true);
+        ((StandardMaterial3D)((QuadMesh)endVFX.DrawPass1).Material).AlbedoColor = color;
         AddChild(mesh);
         AddChild(endVFX);
    }

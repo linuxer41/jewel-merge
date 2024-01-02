@@ -16,7 +16,8 @@ public partial class GameController
     World world;
     Camera3D camera;
 
-    public int score = 0;
+    public int Score = 0;
+    private int mergeCombo = 0;
     public int MAX_LEVEL = 10;
     public GameController(float height, float width, Camera3D camera, float depth = 1)  { 
         this.height = height;
@@ -55,7 +56,7 @@ public partial class GameController
     private void DropObject(Vector3 position)
     {
         if (activeItem != null) {
-            activeItem.Position = new Vector3(position.X, activeItem.Position.Y, activeItem.Position.Z);
+            activeItem.NewPosition = new Vector3(position.X, activeItem.Position.Y, activeItem.Position.Z);
             activeItem.Drop();
             activeItem = null;
             world.GetTree().CreateTimer(0.5).Timeout += Spawn;
@@ -67,7 +68,9 @@ public partial class GameController
 
     private void MoveObject(Vector3 position)
     {
-        if (activeItem != null) activeItem.Position = new Vector3(position.X, activeItem.Position.Y, activeItem.Position.Z);
+        if (activeItem != null) {
+            activeItem.NewPosition = new Vector3(position.X, activeItem.Position.Y, activeItem.Position.Z);
+        }
     }
 
     private const int MIN_JEWELS = 3;
@@ -92,9 +95,6 @@ public partial class GameController
 
        // Asignar posición final
        jewel.Position = new Vector3(xPos, yPos, zPos);
-
-       // Desactivar
-       jewel.isActive = false; 
     }
 }
 
@@ -108,14 +108,12 @@ public partial class GameController
         // Tomar la joya más antigua
         Jewel oldest = world.toPlayContainer.GetChild<Jewel>(0);
         activeItem = oldest;
+
+        activeItem.Reparent(world, false);
+        // world.toPlayContainer.RemoveChild(activeItem);
+        // world.AddChild(activeItem);
         
-        // Removerla y activarla
-        activeItem.isActive = true;
-        // activeItem.Reparent(world, false);
-        world.toPlayContainer.RemoveChild(activeItem);
-        world.AddChild(activeItem);
-        
-        activeItem.PlayLaser();
+        activeItem.Select();
         activeItem.Position = lastPos;
         activeItems.Add(activeItem);
 
@@ -134,29 +132,31 @@ public partial class GameController
 		var obj = objects[level];
 		Jewel jewel = obj.Instantiate<Jewel>();
 		jewel.Level = level;
-        jewel.Scale = Vector3.One * getScaleFactor(level);
+        // jewel.Scale = Vector3.One * getScaleFactor(level);
+        jewel.ScaleFactor = getScaleFactor(level);
+        jewel.Location = LocationEnum.Spawn;
 		jewel.Merge += Merge;
+
 		return jewel;
     }
 
     private float getScaleFactor(int level){
-		return Mathf.Lerp(1f, 2.5f, (level - 1f) / (MAX_LEVEL - 1f)); 
+        float stepScale = 0.15f;
+		// return Mathf.Lerp(1f, 2.5f, (level - 1f) / (MAX_LEVEL - 1f)); 
+        return 1+(stepScale * level);
 	}
 
     private void Merge(Jewel current, Jewel target)
     {
 		if (current.Level < MAX_LEVEL){
-			current.merging = true;
-			target.merging = true;
-			// calculate new position between current and target
-			// Vector3 newPos = new Vector3(
-			// 	Mathf.Lerp(current.Position.X, target.Position.X, 0.5f),
-			// 	Mathf.Lerp(current.Position.Y, target.Position.Y, 0.5f),
-			// 	0f
-			// );
+			current.State = StateEnum.Merging;
+			target.State = StateEnum.Merging;
 			int level = current.Level + 1;
 			Jewel jewel = InstantiateJewel(level);
 			jewel.Position = target.Position;
+            jewel.Location = LocationEnum.Active;
+            jewel.State = StateEnum.Merging;
+            jewel.Origin = OriginEnum.Merge;
 			// remove jewel from list
 			activeItems.Remove(current);
 			activeItems.Remove(target);
@@ -164,7 +164,13 @@ public partial class GameController
             target.QueueFree();
 			world.AddChild(jewel);
 			jewel.PlayMerge();
-			score += current.Level;
+            mergeCombo++;
+            if (mergeCombo == 1){
+                world.GetTree().CreateTimer(1).Timeout += ()=>{
+                    mergeCombo = 0;
+                };
+            }
+			Score += current.Level * mergeCombo;
 
 		}
     }

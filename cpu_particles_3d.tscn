@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bh14i5cdup05l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwv5c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rn3mr"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_r7hwu"]
+material = SubResource("StandardMaterial3D_rn3mr")
+
+[node name="CPUParticles3D" type="CPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_pwv5c")
+mesh = SubResource("QuadMesh_r7hwu")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+own_world_3d = true
+size = Vector2i(100, 100)
+
+[node name="Label" type="Label" parent="SubViewport"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "hola mundo"

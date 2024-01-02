@@ -1,6 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://m6dmreauilwp"]
+[gd_scene load_steps=11 format=3 uid="uid://m6dmreauilwp"]
 
 [ext_resource type="Texture2D" uid="uid://h8b43v3674h6" path="res://Assets/Textures/Sprites/aura1.png" id="1_qwplm"]
+
+[sub_resource type="Curve" id="Curve_h4w53"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_itcm3"]
+curve = SubResource("Curve_h4w53")
 
 [sub_resource type="Curve" id="Curve_3umtn"]
 max_value = 360.0
@@ -27,11 +34,13 @@ spread = 0.0
 gravity = Vector3(0, 0, 0)
 scale_max = 1.1
 scale_curve = SubResource("CurveTexture_vw64n")
+alpha_curve = SubResource("CurveTexture_itcm3")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ln602"]
 transparency = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.137255)
 albedo_texture = ExtResource("1_qwplm")
 billboard_mode = 3
 billboard_keep_scale = true
@@ -48,5 +57,6 @@ emitting = false
 amount = 1
 one_shot = true
 fixed_fps = 0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_8qsyy")
 draw_pass_1 = SubResource("QuadMesh_pracn")
